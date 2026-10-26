@@ -62,17 +62,23 @@ class ArchPainter extends CustomPainter {
     final dy = (size.height - _h * scale) / 2;
 
     if (halo) {
-      final center = Offset(size.width / 2, size.height * 0.48);
-      final radius = math.max(size.width, size.height) * 0.62;
+      // An oval of light that fades out inside the hero's own box, so it never
+      // washes over the text above or below.
+      final center = Offset(size.width / 2, size.height / 2);
+      final radius = size.height / 2;
+      canvas.save();
+      canvas.translate(center.dx, center.dy);
+      canvas.scale(size.width / size.height, 1);
       canvas.drawCircle(
-        center,
+        Offset.zero,
         radius,
         Paint()
           ..shader = RadialGradient(
             colors: [p.halo, p.halo.withValues(alpha: p.isDark ? 0.0 : 0.55), p.halo.withValues(alpha: 0)],
             stops: const [0, 0.5, 1],
-          ).createShader(Rect.fromCircle(center: center, radius: radius)),
+          ).createShader(Rect.fromCircle(center: Offset.zero, radius: radius)),
       );
+      canvas.restore();
     }
 
     canvas.save();
