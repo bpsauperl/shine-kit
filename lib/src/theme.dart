@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'palette.dart';
 
-/// Type: the phone's own system font (SF Pro on iPhone, Roboto on Android),
-/// big and tight for display, quiet and grey for body.
+/// Type: Inter for text, Inter Display for the big headlines and numbers.
+/// Both ship inside the kit (SIL Open Font License, fonts/Inter-LICENSE.txt).
 abstract final class KitType {
+  static const String text = 'packages/shine_kit/Inter';
+  static const String displayFamily = 'packages/shine_kit/InterDisplay';
+
   /// Hero numbers and headlines: "Aligner 04/08", "€100".
   static TextStyle display(double size, {Color? color}) => TextStyle(
+        fontFamily: displayFamily,
         fontSize: size,
         fontWeight: FontWeight.w800,
-        letterSpacing: size * -0.05,
+        letterSpacing: size * -0.04,
         height: 0.98,
         color: color,
         fontFeatures: const [FontFeature.tabularFigures()],
@@ -17,10 +21,11 @@ abstract final class KitType {
 
   /// Page titles.
   static TextStyle title({Color? color}) =>
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -1.35, height: 1.05, color: color);
+      TextStyle(fontFamily: displayFamily, fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -1.1, height: 1.05, color: color);
 
   /// Numbers inside tiles.
   static TextStyle number({double size = 26, Color? color}) => TextStyle(
+        fontFamily: displayFamily,
         fontSize: size,
         fontWeight: FontWeight.w700,
         letterSpacing: size * -0.04,
@@ -55,7 +60,7 @@ ThemeData kitTheme(KitAccent brand, Brightness brightness) {
     error: p.danger,
   );
 
-  final base = ThemeData(useMaterial3: true, brightness: brightness, colorScheme: scheme, extensions: [p]);
+  final base = ThemeData(useMaterial3: true, brightness: brightness, colorScheme: scheme, fontFamily: KitType.text, extensions: [p]);
   final text = base.textTheme.apply(bodyColor: p.ink, displayColor: p.ink);
   const pill = StadiumBorder();
   final field = OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: p.hairline, width: 0.5));
@@ -64,8 +69,8 @@ ThemeData kitTheme(KitAccent brand, Brightness brightness) {
     scaffoldBackgroundColor: p.ground,
     splashFactory: InkSparkle.splashFactory,
     textTheme: text.copyWith(
-      displaySmall: text.displaySmall?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -1.8, height: 1),
-      headlineMedium: text.headlineMedium?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -1.3, height: 1.05),
+      displaySmall: text.displaySmall?.copyWith(fontFamily: KitType.displayFamily, fontWeight: FontWeight.w800, letterSpacing: -1.4, height: 1),
+      headlineMedium: text.headlineMedium?.copyWith(fontFamily: KitType.displayFamily, fontWeight: FontWeight.w800, letterSpacing: -1.1, height: 1.05),
       headlineSmall: text.headlineSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.8),
       titleLarge: text.titleLarge?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.5),
       titleMedium: text.titleMedium?.copyWith(fontWeight: FontWeight.w600, letterSpacing: -0.2),
@@ -160,6 +165,13 @@ ThemeData kitTheme(KitAccent brand, Brightness brightness) {
       showDragHandle: true,
       dragHandleColor: p.hairline,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(KitSize.panelRadius))),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: p.tile,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(KitSize.panelRadius)),
+      titleTextStyle: TextStyle(fontFamily: KitType.displayFamily, fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -0.8, color: p.ink),
+      contentTextStyle: TextStyle(fontFamily: KitType.text, fontSize: 15, height: 1.45, color: p.secondary),
     ),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: p.tile,

@@ -32,7 +32,7 @@ final p = context.kit; // colours for the current app and mode
 | `KitSlideToConfirm` | Slide to send, for actions that can't be undone (a plain button for screen readers) |
 | `KitWordmark` | "my"/"dr" in the accent, "Shine" in ink |
 
-The font is the phone's own (SF Pro on iPhone, Roboto on Android). No third-party packages.
+Fonts: Inter and Inter Display, shipped in `fonts/` (SIL Open Font License). No third-party packages.
 
 ## Check
 
